@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Online Quiz Application</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Login Page -->
+    <div id="loginPage" class="page active">
+        <div class="container">
+            <div class="card">
+                <div class="card-header">
+                    <h1>Welcome Back!</h1>
+                    <p>Sign in to continue</p>
+                </div>
+                <form id="loginForm" class="form">
+                    <div class="form-group">
+                     <label for="loginEmail">Email</label>
+                        <input type="email" id="loginEmail" required placeholder="Enter your email address">
+            </div>
+                    <div class="form-group">
+                        <label for="loginPassword">Password</label>
+                        <input type="password" id="loginPassword" required placeholder="Enter your password">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Sign In</button>
+                    <p class="form-footer">
+                        Don't have an account? <a href="#" id="showRegister">Create Account</a>
+                    </p>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Registration Page -->
+    <div id="registerPage" class="page">
+        <div class="container">
+            <div class="card">
+                <div class="card-header">
+         <h1>Create Account</h1>
+            <p>Register with your email to start quizzing</p>
+         </div>
+                <form id="registerForm" class="form">
+              <div class="form-group">
+                        <label for="registerName">Full Name</label>
+              <input type="text" id="registerName" required placeholder="Enter your full name">
+                    </div>
+      <div class="form-group">
+                        <label for="registerEmail">Email Address</label>
+                        <input type="email" id="registerEmail" required placeholder="Enter your email address" autocomplete="email">
+                        <small class="form-hint">Please use your own email address</small>
+                    </div>
+                    <div class="form-group">
+                        <label for="registerPassword">Password</label>
+                        <input type="password" id="registerPassword" required placeholder="Create a password (min. 6 characters)" minlength="6" autocomplete="new-password">
+                </div>
+                    <div class="form-group">
+         <label for="confirmPassword">Confirm Password</label>
+                <input type="password" id="confirmPassword" required placeholder="Confirm your password" autocomplete="new-password">
+          </div>
+                    <button type="submit" class="btn btn-primary">Create Account</button>
+              <p class="form-footer">
+             Already have an account? <a href="#" id="showLogin">Sign In</a>
+                    </p>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Dashboard Page -->
+    <div id="dashboardPage" class="page">
+        <div class="container">
+            <div class="dashboard-header">
+                <div>
+                    <h1>QuickQuiz</h1>
+<p id="welcomeMessage">Welcome, User!</p>
+                </div>
+<div class="header-actions">
+                    <button id="helpBtn" class="btn btn-secondary">Help & Support</button>
+                    <button id="viewHistory" class="btn btn-secondary">Score History</button>
+                    <button id="logoutBtn" class="btn btn-outline">Logout</button>
+                </div>
+            </div>
+
+            <div class="categories-grid">
+           
+            </div>
+
+     <div id="difficultyModal" class="modal" style="display: none;">
+                <div class="modal-content">
+                  <div class="modal-header">
+                 <h2>Select Difficulty</h2>
+                   <button class="modal-close" onclick="closeDifficultyModal()">&times;</button>
+                    </div>
+                <div class="difficulty-buttons">
+                        <button class="btn btn-difficulty easy difficulty-btn" data-difficulty="easy">
+                            <span class="difficulty-icon"></span>
+                    <span class="difficulty-label">Easy</span>
+                            <span class="difficulty-desc">Beginner friendly</span>
+                        </button>
+                        <button class="btn btn-difficulty medium difficulty-btn" data-difficulty="medium">
+                     <span class="difficulty-icon"></span>
+            <span class="difficulty-label">Medium</span>
+                            <span class="difficulty-desc">Moderate challenge</span>
+             </button>
+                        <button class="btn btn-difficulty hard difficulty-btn" data-difficulty="hard">
+                 <span class="difficulty-icon"></span>
+                            <span class="difficulty-label">Hard</span>
+              <span class="difficulty-desc">Expert level</span>
+              </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quiz Page -->
+    <div id="quizPage" class="page">
+        <div class="container">
+            <div class="quiz-header">
+                <div class="quiz-info">
+                    <h2 id="quizCategory">Quiz Category</h2>
+                    <p id="quizQuestionNumber">Question 1 of 10</p>
+                </div>
+                <div class="timer-container">
+                    <div class="timer" id="timer">
+                        <span class="timer-icon">⏱️</span>
+<span id="timerValue">10:00</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="quiz-content">
+                <div class="question-card">
+                    <h3 id="questionText">Question will appear here</h3>
+</div>
+
+                <div class="options-container" id="optionsContainer">
+                    <!-- Options will be dynamically generated -->
+                </div>
+
+                <div class="quiz-navigation">
+                    <button id="prevQuestion" class="btn btn-secondary" disabled>Previous</button>
+                    <div class="question-indicators" id="questionIndicators">
+                        <!-- Question indicators will be dynamically generated -->
+                    </div>
+                    <button id="nextQuestion" class="btn btn-secondary">Next</button>
+                </div>
+
+                <div class="quiz-actions">
+                 <button id="reviewLater" class="btn btn-outline">Review Later</button>
+<button id="submitQuiz" class="btn btn-primary">Submit Quiz</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Results Page -->
+    <div id="resultsPage" class="page">
+        <div class="container">
+            <div class="results-card">
+                <div class="results-header">
+  <div class="score-circle">
+<svg class="score-svg" viewBox="0 0 120 120">
+<circle class="score-bg" cx="60" cy="60" r="54"></circle>
+                 <circle class="score-progress" cx="60" cy="60" r="54" id="scoreCircle"></circle>
+                        </svg>
+                        <div class="score-text">
+                            <span id="scorePercentage">0%</span>
+                        </div>
+                    </div>
+                    <h1>Quiz Completed!</h1>
+                    <p id="resultsMessage">Great job!</p>
+                </div>
+
+                <div class="results-stats">
+                    <div class="stat-item">
+                        <div class="stat-value" id="totalQuestions">0</div>
+                        <div class="stat-label">Total Questions</div>
+                    </div>
+                    <div class="stat-item correct">
+                        <div class="stat-value" id="correctAnswers">0</div>
+                        <div class="stat-label">Correct</div>
+                    </div>
+                    <div class="stat-item incorrect">
+                        <div class="stat-value" id="incorrectAnswers">0</div>
+                        <div class="stat-label">Incorrect</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value" id="timeTaken">0:00</div>
+                        <div class="stat-label">Time Taken</div>
+                    </div>
+                </div>
+
+                <div class="results-actions">
+                    <button id="reviewAnswers" class="btn btn-secondary">Review Answers</button>
+                    <button id="newQuiz" class="btn btn-primary">Take Another Quiz</button>
+                </div>
+            </div>
+
+            <!-- Review Section -->
+            <div id="reviewSection" class="review-section" style="display: none;">
+                <h2>Answer Review</h2>
+                <div id="reviewContainer"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Score History Page -->
+    <div id="historyPage" class="page">
+        <div class="container">
+            <div class="history-header">
+                <h1>Score History</h1>
+                <button id="backToDashboard" class="btn btn-outline">Back to Dashboard</button>
+            </div>
+            <div id="historyContainer" class="history-container">
+                <!-- History items will be dynamically generated -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Help Desk Page -->
+    <div id="helpPage" class="page">
+        <div class="container">
+            <div class="help-header">
+                <h1>Help & Support Center</h1>
+                <button id="backToDashboardFromHelp" class="btn btn-outline">Back to Dashboard</button>
+            </div>
+
+            <div class="help-content">
+                <!-- Quick Start Guide -->
+                <section class="help-section">
+                    <h2>🚀 Quick Start Guide</h2>
+                    <div class="help-card">
+                        <h3>Getting Started</h3>
+                        <ol>
+                            <li><strong>Create an Account:</strong> Click "Sign Up" and enter your name, email, and password (minimum 6 characters).</li>
+                            <li><strong>Choose a Category:</strong> Select from 8 different quiz categories including General Knowledge, Science, History, Technology, and Coding languages.</li>
+                            <li><strong>Select Difficulty:</strong> Choose Easy, Medium, or Hard based on your skill level.</li>
+                            <li><strong>Take the Quiz:</strong> Answer 10 questions within 10 minutes. You can navigate between questions freely.</li>
+                            <li><strong>View Results:</strong> See your score, review answers, and check your performance history.</li>
+                        </ol>
+                    </div>
+                </section>
+
+                <!-- Features -->
+                <section class="help-section">
+                    <h2>✨ Features</h2>
+                    <div class="help-grid">
+                        <div class="help-card">
+                            <h3>📚 Multiple Categories</h3>
+                            <p>Choose from 8 categories: General Knowledge, Science, History, Technology, JavaScript, Python, Java, and C++.</p>
+                        </div>
+                        <div class="help-card">
+                            <h3>🎯 Difficulty Levels</h3>
+                            <p>Each category has Easy, Medium, and Hard difficulty levels with 10 questions each.</p>
+                        </div>
+                        <div class="help-card">
+                            <h3>⏱️ Timer</h3>
+                            <p>10-minute timer per quiz. Timer changes color as time runs out (yellow at 3 min, red at 1 min).</p>
+                        </div>
+                        <div class="help-card">
+                            <h3>📊 Score Tracking</h3>
+                            <p>Track your performance with detailed score history showing category, difficulty, score, and time taken.</p>
+                        </div>
+                        <div class="help-card">
+                            <h3>🔍 Review Mode</h3>
+                            <p>Mark questions for review and see all answers after completing the quiz.</p>
+                        </div>
+                        <div class="help-card">
+                            <h3>📈 Progress Indicators</h3>
+                            <p>Visual indicators show answered questions, current question, and questions marked for review.</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- FAQ -->
+                <section class="help-section">
+                    <h2>❓ Frequently Asked Questions</h2>
+                    <div class="faq-container">
+                        <div class="faq-item">
+                            <div class="faq-question">
+                                <h3>How do I create an account?</h3>
+                                <span class="faq-toggle">+</span>
+                            </div>
+                            <div class="faq-answer">
+                                <p>Click "Sign Up" on the login page, enter your full name, email address, and create a password (minimum 6 characters). Make sure to use your own personal email address.</p>
+                            </div>
+                        </div>
+
+                        <div class="faq-item">
+                            <div class="faq-question">
+                                <h3>Can I change my answers during the quiz?</h3>
+                                <span class="faq-toggle">+</span>
+                            </div>
+                            <div class="faq-answer">
+                                <p>Yes! You can navigate between questions freely and change your answers at any time before submitting the quiz.</p>
+                            </div>
+                        </div>
+
+                        <div class="faq-item">
+                            <div class="faq-question">
+                                <h3>What happens if I run out of time?</h3>
+                                <span class="faq-toggle">+</span>
+                            </div>
+                            <div class="faq-answer">
+                                <p>The quiz will automatically submit when the timer reaches zero. All answered questions will be scored.</p>
+                            </div>
+                        </div>
+
+                        <div class="faq-item">
+                            <div class="faq-question">
+                                <h3>How is my score calculated?</h3>
+                                <span class="faq-toggle">+</span>
+                            </div>
+                            <div class="faq-answer">
+                                <p>Your score is calculated as a percentage: (Correct Answers / Total Questions) × 100. Unanswered questions are counted as incorrect.</p>
+                            </div>
+                        </div>
+
+                        <div class="faq-item">
+                            <div class="faq-question">
+                                <h3>Can I review my answers after submitting?</h3>
+                                <span class="faq-toggle">+</span>
+                            </div>
+                            <div class="faq-answer">
+                                <p>Yes! After completing a quiz, click "Review Answers" to see all questions, your answers, and the correct answers.</p>
+                            </div>
+                        </div>
+
+                        <div class="faq-item">
+                            <div class="faq-question">
+                                <h3>How many questions are in each quiz?</h3>
+                                <span class="faq-toggle">+</span>
+                            </div>
+                            <div class="faq-answer">
+                                <p>Each quiz contains 10 questions. There are 240 total questions across all categories and difficulty levels.</p>
+                            </div>
+                        </div>
+
+                        <div class="faq-item">
+                            <div class="faq-question">
+                                <h3>Is my data saved?</h3>
+                                <span class="faq-toggle">+</span>
+                            </div>
+                            <div class="faq-answer">
+                                <p>Yes, your account information and quiz history are saved in your browser's localStorage. Your data persists between sessions.</p>
+                            </div>
+                        </div>
+
+                        <div class="faq-item">
+                            <div class="faq-question">
+                                <h3>Can I take the same quiz multiple times?</h3>
+                                <span class="faq-toggle">+</span>
+                            </div>
+                            <div class="faq-answer">
+                                <p>Absolutely! You can retake any quiz as many times as you want. Each attempt is saved in your score history.</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Tips & Tricks -->
+                <section class="help-section">
+                    <h2>💡 Tips & Tricks</h2>
+                    <div class="help-card">
+                        <ul>
+                            <li><strong>Read Carefully:</strong> Take your time to read each question and all options before answering.</li>
+                            <li><strong>Use Review Feature:</strong> Mark difficult questions for review and come back to them later.</li>
+                            <li><strong>Watch the Timer:</strong> Keep an eye on the timer - it changes color to warn you when time is running low.</li>
+                            <li><strong>Navigate Freely:</strong> Use the question indicators at the bottom to jump to any question.</li>
+                            <li><strong>Check Your Answers:</strong> Always review your answers before submitting to catch any mistakes.</li>
+                            <li><strong>Practice Regularly:</strong> Take quizzes from different categories and difficulty levels to improve your knowledge.</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- Troubleshooting -->
+                <section class="help-section">
+                    <h2>🔧 Troubleshooting</h2>
+                    <div class="help-card">
+                        <h3>Common Issues & Solutions</h3>
+                        <div class="troubleshoot-item">
+                            <h4>Can't log in?</h4>
+                            <p>Make sure you're using the correct email and password. If you forgot your password, you'll need to create a new account with a different email.</p>
+                        </div>
+                        <div class="troubleshoot-item">
+                            <h4>Quiz not loading?</h4>
+                            <p>Refresh the page. Make sure all files (index.html, script.js, quiz-data.js, styles.css) are in the same folder.</p>
+                        </div>
+                        <div class="troubleshoot-item">
+                            <h4>Timer not working?</h4>
+                            <p>Check your browser console for errors. Make sure JavaScript is enabled in your browser settings.</p>
+                        </div>
+                        <div class="troubleshoot-item">
+                            <h4>Score history not showing?</h4>
+                            <p>Your history is stored in browser localStorage. If you clear browser data, your history will be lost. Make sure you're logged in.</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Contact -->
+                <section class="help-section">
+                    <h2>📧 Need More Help?</h2>
+                    <div class="help-card">
+                        <p>If you're experiencing issues or have questions not covered here:</p>
+                        <ul>
+                            <li>Check the browser console for error messages</li>
+                            <li>Make sure you're using a modern browser (Chrome, Firefox, Safari, Edge)</li>
+                            <li>Ensure JavaScript is enabled</li>
+                            <li>Try clearing your browser cache and reloading</li>
+                        </ul>
+                        <p class="help-note"><strong>Note:</strong> This is a client-side application. All data is stored locally in your browser.</p>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notification Toast -->
+    <div id="toast" class="toast"></div>
+
+    <script src="quiz-data.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
